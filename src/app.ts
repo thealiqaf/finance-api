@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/UserRoutes';
 import transactionRoutes from './routes/TransactionRoutes';
 import connectDB from './config/db';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api', transactionRoutes);
