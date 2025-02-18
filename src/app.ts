@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/UserRoutes';
 import transactionRoutes from './routes/TransactionRoutes';
+import reportRoutes from './routes/ReportRoutes';
 import connectDB from './config/db';
 import bodyParser from 'body-parser';
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api', reportRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running');
