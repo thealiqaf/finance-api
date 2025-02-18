@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
-app.use('/api', transactionRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running');
