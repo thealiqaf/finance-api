@@ -26,6 +26,9 @@
   },
   "homepage": "https://github.com/thealiqaf/finance-api#readme",
   "dependencies": {
+    "@huggingface/inference": "^3.3.5",
+    "@huggingface/transformers": "^3.3.3",
+    "axios": "^1.7.9",
     "bcryptjs": "^3.0.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2"

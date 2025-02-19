@@ -1,5 +1,6 @@
 import { Request, Response, RequestHandler } from "express";
 import Transaction from "../models/Transaction";
+import { detectAnomaly } from "../services/huggingfaceService";
 
 interface AuthRequest extends Request {
   user?: any;
@@ -9,11 +10,21 @@ export const createTransaction: RequestHandler = async (req: AuthRequest, res: R
   const { type, amount, category, description } = req.body;
 
   if (!type || !amount || !category) {
-    res.status(400).json({ message: "Fill all fields" });
-    return;
+     res.status(400).json({ message: "Fill all fields" });
+     return;
   }
 
   try {
+    const anomalyResult = await detectAnomaly({ type, amount, category, description });
+
+    if (anomalyResult?.is_anomaly) {
+       res.status(200).json({
+        message: "An abnormal transaction pattern detected",
+        details: anomalyResult,
+      });
+      return;
+    }
+
     const transaction = new Transaction({
       userId: req.user.id,
       type,
@@ -25,10 +36,11 @@ export const createTransaction: RequestHandler = async (req: AuthRequest, res: R
     await transaction.save();
     res.status(201).json(transaction);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error in add transaction"});
+    console.error("Error in createTransaction:", error);
+    res.status(500).json({ message: "Error in adding transaction" });
   }
 };
+
 
 export const getTransactions: RequestHandler = async (req: AuthRequest, res: Response) => {
   try {
